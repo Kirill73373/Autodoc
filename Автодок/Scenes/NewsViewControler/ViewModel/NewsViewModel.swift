@@ -22,6 +22,7 @@ final class NewsViewModel {
     
     var model: NewsModel?
     var modelCopy: NewsModel?
+    var selectedIndex: Int?
     var cancellables = Set<AnyCancellable>()
     
     //MARK: - Initiation
@@ -33,13 +34,11 @@ final class NewsViewModel {
     //MARK: - Public Method
     
     func getNewsRequest() {
-        LoaderIndicator.shared.activateIndicator(true)
         Task(priority: .userInitiated) {
             do {
                 guard let networkService = networkService else { return }
                 let response = try await networkService.request(.news, for: NewsModel.self)
                 subjectModel.send(response ?? NewsModel(news: [], totalCount: 0))
-                LoaderIndicator.shared.activateIndicator(false)
             } catch {
                 print(error)
             }

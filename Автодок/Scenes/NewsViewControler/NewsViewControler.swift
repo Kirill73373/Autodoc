@@ -14,6 +14,12 @@ final class NewsViewControler: UIViewController {
     
     private let searchView = SearchView(placeholder: "Поиск")
     
+    private let refresherControl: UIRefreshControl = {
+        let ref = UIRefreshControl()
+        ref.tintColor = ColorHelper.redColor
+        return ref
+    }()
+    
     private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 40
@@ -25,6 +31,7 @@ final class NewsViewControler: UIViewController {
         collection.showsVerticalScrollIndicator = false
         collection.contentInsetAdjustmentBehavior = .never
         collection.contentInset = UIEdgeInsets(top: 135, left: 10, bottom: 100, right: 10)
+        collection.alwaysBounceVertical = true
         return collection
     }()
     
@@ -79,6 +86,7 @@ final class NewsViewControler: UIViewController {
                 UIView.transition(with: self.collectionView, duration: 0.25, options: [.allowAnimatedContent, .transitionCrossDissolve, .curveEaseInOut], animations: {
                     self.collectionView.reloadData()
                 })
+                self.refresherControl.endRefreshing()
             }.store(in: &viewModel.cancellables)
         
         scrollToTopView.subject.sink { [weak self] _ in
@@ -98,6 +106,12 @@ final class NewsViewControler: UIViewController {
         collectionView.dataSource = self
         view.backgroundColor = ColorHelper.whiteColor
         navigationController?.navigationBar.isHidden = true
+        collectionView.addSubview(refresherControl)
+        refresherControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+    }
+    
+    @objc private func didPullToRefresh() {
+        viewModel.getNewsRequest()
     }
     
     private func addConstraints() {
@@ -189,7 +203,11 @@ extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = collectionView.frame.size
-        return CGSize(width: (size.width - 40) / 2, height: UIDevice.current.userInterfaceIdiom == .pad ? 400 : 200)
+        if viewModel.selectedIndex == indexPath.row {
+            return CGSize(width: (size.width - 40) / 2, height: UIDevice.current.userInterfaceIdiom == .pad ? 400 : 300)
+        } else {
+            return CGSize(width: (size.width - 40) / 2, height: UIDevice.current.userInterfaceIdiom == .pad ? 400 : 200)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

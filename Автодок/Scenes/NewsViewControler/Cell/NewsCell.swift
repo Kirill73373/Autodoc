@@ -30,7 +30,7 @@ final class NewsCell: UICollectionViewCell {
     }()
     
     var dataModel: NewsItemModel? {
-        didSet{
+        didSet {
             guard let model = dataModel else{ return }
             DispatchQueue.main.async {
                 self.titleImageView.loadImageCache(urlString: model.titleImageURL, size: 400)
