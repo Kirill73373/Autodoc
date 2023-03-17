@@ -204,15 +204,10 @@ extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = collectionView.frame.size
-        if viewModel.selectedIndex == indexPath.row {
-            return CGSize(width: (size.width - 40) / 2, height: UIDevice.current.userInterfaceIdiom == .pad ? 400 : 300)
-        } else {
-            return CGSize(width: (size.width - 40) / 2, height: UIDevice.current.userInterfaceIdiom == .pad ? 400 : 200)
-        }
+        return CGSize(width: (size.width - 40) / 2, height: UIDevice.current.userInterfaceIdiom == .pad ? 400 : 200)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        view.endEditing(true)
         UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.7)
         guard let model = viewModel.modelCopy?.news[indexPath.row] else { return }
         showOpenNewsViewController(model)
