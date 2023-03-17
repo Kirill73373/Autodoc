@@ -24,7 +24,7 @@ final class FullUrlNewsCell: UICollectionViewCell {
     var dataModel: NewsItemModel? {
         didSet{
             guard let model = dataModel else{ return }
-            titleLabel.text = model.title
+            titleLabel.text = model.fullURL
         }
     }
     

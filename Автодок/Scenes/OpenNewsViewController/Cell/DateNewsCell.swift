@@ -24,7 +24,7 @@ final class DateNewsCell: UICollectionViewCell {
     var dataModel: NewsItemModel? {
         didSet{
             guard let model = dataModel else{ return }
-            titleLabel.text = model.title
+            titleLabel.text = "Дата публикации: \(model.publishedDate.convertDateFormat())"
         }
     }
     

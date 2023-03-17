@@ -25,6 +25,7 @@ final class OpenImageViewController: UIViewController {
         let sv = UIScrollView()
         sv.minimumZoomScale = 1.0
         sv.maximumZoomScale = 5.0
+        sv.showsVerticalScrollIndicator = false
         return sv
       }()
     

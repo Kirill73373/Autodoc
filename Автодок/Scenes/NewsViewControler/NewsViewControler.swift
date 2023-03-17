@@ -76,7 +76,9 @@ final class NewsViewControler: UIViewController {
                 self.viewModel.model = model
                 self.viewModel.modelCopy = self.viewModel.model
                 self.emptyImageView.isHidden = !model.news.isEmpty
-                self.collectionView.reloadData()
+                UIView.transition(with: self.collectionView, duration: 0.25, options: [.allowAnimatedContent, .transitionCrossDissolve, .curveEaseInOut], animations: {
+                    self.collectionView.reloadData()
+                })
             }.store(in: &viewModel.cancellables)
         
         scrollToTopView.subject.sink { [weak self] _ in
