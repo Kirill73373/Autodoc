@@ -142,8 +142,10 @@ extension NewsViewControler {
             .sink { [weak self] type in
                 guard let self = self else { return }
                 switch type {
-                case .textFieldShouldReturn, .textFieldDidEndEditing:
-                    self.collectionView.reloadData()
+                case .textFieldShouldReturn:
+                    UIView.transition(with: self.collectionView, duration: 0.25, options: [.allowAnimatedContent, .transitionCrossDissolve], animations: {
+                        self.collectionView.reloadData()
+                    })
                 case .textFieldDidChangeSelection(let text):
                     guard let modelNews = self.viewModel.model else { return }
                     if text.count != 0 {
@@ -166,7 +168,9 @@ extension NewsViewControler {
     private func reloadData() {
         viewModel.modelCopy = viewModel.model
         emptyImageView.isHidden = !(viewModel.modelCopy?.news.isEmpty ?? false)
-        collectionView.reloadData()
+        UIView.transition(with: self.collectionView, duration: 0.25, options: [.allowAnimatedContent, .transitionCrossDissolve, .curveEaseInOut], animations: {
+            self.collectionView.reloadData()
+        })
     }
     
     private func showOpenNewsViewController(_ model: NewsItemModel) {
@@ -209,8 +213,7 @@ extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NewsCell", for: indexPath) as? NewsCell else { return UICollectionViewCell() }
-        let model = viewModel.modelCopy?.news[indexPath.row]
-        cell.configure(model: model)
+        cell.dataModel = viewModel.modelCopy?.news[indexPath.row]
         return cell
     }
 }

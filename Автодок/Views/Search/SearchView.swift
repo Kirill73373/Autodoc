@@ -15,7 +15,6 @@ final class SearchView: UIView {
     
     enum TypeDelegate {
         case textFieldShouldReturn
-        case textFieldDidEndEditing
         case textFieldDidChangeSelection(String)
     }
     
@@ -124,10 +123,6 @@ extension SearchView: UITextFieldDelegate {
         typeDelegate.send(.textFieldShouldReturn)
         textField.endEditing(true)
         return true
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        typeDelegate.send(.textFieldDidEndEditing)
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {

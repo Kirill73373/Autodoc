@@ -21,6 +21,13 @@ final class DescriptionNewsCell: UICollectionViewCell {
         return lb
     }()
     
+    var dataModel: NewsItemModel? {
+        didSet{
+            guard let model = dataModel else{ return }
+            titleLabel.text = model.title
+        }
+    }
+    
     //MARK: - Override Method
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
@@ -44,12 +51,6 @@ final class DescriptionNewsCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - Configure Cell
-    
-    func configure(model: NewsItemModel?) {
-        titleLabel.text = model?.description ?? ""
     }
     
     //MARK: - Private Method

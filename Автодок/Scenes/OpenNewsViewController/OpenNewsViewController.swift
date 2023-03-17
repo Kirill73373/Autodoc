@@ -153,28 +153,23 @@ extension OpenNewsViewController: UICollectionViewDelegate, UICollectionViewData
         switch modelIsType.type {
         case .picture:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PictureNewsCell", for: indexPath) as? PictureNewsCell else { return UICollectionViewCell() }
-            let model = viewModel.model
-            cell.configure(model: model)
+            cell.dataModel = viewModel.model
             return cell
         case .title:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TitleNewsCell", for: indexPath) as? TitleNewsCell else { return UICollectionViewCell() }
-            let model = viewModel.model
-            cell.configure(model: model)
+            cell.dataModel = viewModel.model
             return cell
         case .description:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DescriptionNewsCell", for: indexPath) as? DescriptionNewsCell else { return UICollectionViewCell() }
-            let model = viewModel.model
-            cell.configure(model: model)
+            cell.dataModel = viewModel.model
             return cell
         case .fullUrl:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FullUrlNewsCell", for: indexPath) as? FullUrlNewsCell else { return UICollectionViewCell() }
-            let model = viewModel.model
-            cell.configure(model: model)
+            cell.dataModel = viewModel.model
             return cell
         case .date:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateNewsCell", for: indexPath) as? DateNewsCell else { return UICollectionViewCell() }
-            let model = viewModel.model
-            cell.configure(model: model)
+            cell.dataModel = viewModel.model
             return cell
             
         }

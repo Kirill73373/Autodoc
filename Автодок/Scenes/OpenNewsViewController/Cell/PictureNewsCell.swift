@@ -18,6 +18,15 @@ final class PictureNewsCell: UICollectionViewCell {
         img.backgroundColor = ColorHelper.lightGrayColor.withAlphaComponent(0.1)
         return img
     }()
+    
+    var dataModel: NewsItemModel? {
+        didSet{
+            guard let model = dataModel else{ return }
+            DispatchQueue.main.async {
+                self.titleImageView.loadImageCache(urlString: model.titleImageURL, size: 700)
+            }
+        }
+    }
    
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -34,14 +43,6 @@ final class PictureNewsCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - Configure Cell
-    
-    func configure(model: NewsItemModel?) {
-        DispatchQueue.main.async {
-            self.titleImageView.loadImageCache(urlString: model?.titleImageURL ?? "", size: 700)
-        }
     }
     
     //MARK: - Private Method

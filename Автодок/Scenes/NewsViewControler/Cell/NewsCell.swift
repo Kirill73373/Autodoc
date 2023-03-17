@@ -29,6 +29,16 @@ final class NewsCell: UICollectionViewCell {
         return lb
     }()
     
+    var dataModel: NewsItemModel? {
+        didSet{
+            guard let model = dataModel else{ return }
+            DispatchQueue.main.async {
+                self.titleImageView.loadImageCache(urlString: model.titleImageURL, size: 400)
+                self.titleLabel.text = model.title
+            }
+        }
+    }
+    
     //MARK: - Initiation
     
     override func prepareForReuse() {
@@ -45,15 +55,6 @@ final class NewsCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - Configure Cell
-    
-    func configure(model: NewsItemModel?) {
-        DispatchQueue.main.async {
-            self.titleImageView.loadImageCache(urlString: model?.titleImageURL ?? "", size: 400)
-            self.titleLabel.text = model?.title
-        }
     }
     
     //MARK: - Private Method
