@@ -76,8 +76,7 @@ final class NewsViewControler: UIViewController {
     //MARK: - Private Method
     
     private func bindUI() {
-        viewModel.subjectModel
-            .receive(on: DispatchQueue.main)
+        viewModel.subjectModel.receive(on: DispatchQueue.main)
             .sink { [weak self] model in
                 guard let self = self else { return }
                 self.viewModel.model = model
@@ -89,15 +88,17 @@ final class NewsViewControler: UIViewController {
                 self.refresherControl.endRefreshing()
             }.store(in: &viewModel.cancellables)
         
-        scrollToTopView.subject.sink { [weak self] _ in
-            guard let self = self else { return }
-            self.collectionView.scroll(row: 0)
-        }.store(in: &viewModel.cancellables)
+        scrollToTopView.subject
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.collectionView.scroll(row: 0)
+            }.store(in: &viewModel.cancellables)
         
-        searchView.clearText.sink { [weak self] _ in
-            guard let self = self else { return }
-            self.reloadData()
-        }.store(in: &viewModel.cancellables)
+        searchView.clearText
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.reloadData()
+            }.store(in: &viewModel.cancellables)
     }
     
     private func setupStyleView() {
