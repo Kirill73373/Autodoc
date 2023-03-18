@@ -14,19 +14,13 @@ struct NewsModel: Decodable {
 
 struct NewsItemModel: Decodable {
     let id: Int
-    let title: String
-    let description: String
-    let publishedDate: String
-    let url: String
-    let fullURL: String
-    let titleImageURL: String
+    let title, description, publishedDate, url, fullURL, titleImageURL: String
     let categoryType: CategoryType
     
     enum CodingKeys: String, CodingKey {
-        case id, title, description, publishedDate, url
+        case id, title, description, publishedDate, url, categoryType
         case fullURL = "fullUrl"
         case titleImageURL = "titleImageUrl"
-        case categoryType
     }
 }
 

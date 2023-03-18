@@ -84,13 +84,7 @@ final class OpenNewsViewController: UIViewController {
     }
     
     private func addConstraints() {
-        view.addSubviews(
-            collectionView,
-            backView
-        )
-        
-        backView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubviews(collectionView, backView)
         
         NSLayoutConstraint.activate([
             backView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),

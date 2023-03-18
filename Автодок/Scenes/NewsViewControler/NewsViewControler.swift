@@ -123,19 +123,8 @@ final class NewsViewControler: UIViewController {
     }
     
     private func addConstraints() {
-        view.addSubviews(
-            collectionView,
-            emptyImageView,
-            searchView,
-            scrollToTopView
-        )
-        
-        collectionView.addSubview(refresherControl)
-        
-        emptyImageView.translatesAutoresizingMaskIntoConstraints = false
-        searchView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        scrollToTopView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubviews(collectionView, emptyImageView, searchView, scrollToTopView)
+        collectionView.addSubviews(refresherControl)
         
         NSLayoutConstraint.activate([
             emptyImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),

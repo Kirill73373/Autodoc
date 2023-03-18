@@ -86,15 +86,7 @@ final class SearchView: UIView {
     }
     
     private func addConstraints() {
-        addSubviews(
-            searchIconView,
-            searchTextView,
-            clearTextIconView
-        )
-        
-        searchIconView.translatesAutoresizingMaskIntoConstraints = false
-        searchTextView.translatesAutoresizingMaskIntoConstraints = false
-        clearTextIconView.translatesAutoresizingMaskIntoConstraints = false
+        addSubviews(searchIconView, searchTextView, clearTextIconView)
         
         NSLayoutConstraint.activate([
             searchIconView.centerYAnchor.constraint(equalTo: centerYAnchor),

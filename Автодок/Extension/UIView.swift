@@ -12,7 +12,9 @@ extension UIView {
     func addSubviews(_ view: UIView...) {
         view.forEach { view in
             addSubview(view)
+            view.translatesAutoresizingMaskIntoConstraints = false
         }
+        
     }
     
     func rotateWithAnimation(angle: CGFloat, duration: CGFloat? = nil) {

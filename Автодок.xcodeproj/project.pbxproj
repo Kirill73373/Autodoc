@@ -133,9 +133,9 @@
 		BD71A93A29C32E9C00E6A86E /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				BD71A98529C402E800E6A86E /* AlertHelper.swift */,
 				BD71A93C29C32ECA00E6A86E /* ColorHelper.swift */,
 				BD71A93E29C32ED100E6A86E /* ImageHelper.swift */,
-				BD71A98529C402E800E6A86E /* AlertHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -151,13 +151,13 @@
 		BD71A94029C32EEE00E6A86E /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				BD71A94429C32F1400E6A86E /* UIColor.swift */,
-				BD71A95B29C33A0400E6A86E /* UIView.swift */,
-				BD71A96329C38CA000E6A86E /* UICollectionView.swift */,
-				BD71A96D29C3AA7E00E6A86E /* UIImageView.swift */,
-				BD71A96F29C3B07000E6A86E /* UIImage.swift */,
 				BD71A98329C3FD9000E6A86E /* String.swift */,
+				BD71A95B29C33A0400E6A86E /* UIView.swift */,
+				BD71A94429C32F1400E6A86E /* UIColor.swift */,
+				BD71A96F29C3B07000E6A86E /* UIImage.swift */,
 				BD71A99229C659AC00E6A86E /* UIDevice.swift */,
+				BD71A96D29C3AA7E00E6A86E /* UIImageView.swift */,
+				BD71A96329C38CA000E6A86E /* UICollectionView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";

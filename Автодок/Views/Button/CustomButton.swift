@@ -166,12 +166,8 @@ final class CustomButton: UIButton {
     }
     
     private func addConstraints() {
-        addSubviews(
-            containerStackView
-        )
-        
-        containerStackView.translatesAutoresizingMaskIntoConstraints = false
-        
+        addSubviews(containerStackView)
+                
         NSLayoutConstraint.activate([
             containerStackView.topAnchor.constraint(equalTo: topAnchor),
             containerStackView.trailingAnchor.constraint(equalTo: trailingAnchor),

@@ -60,11 +60,7 @@ final class FullUrlNewsCell: UICollectionViewCell {
     }
     
     private func addConstraints() {
-        contentView.addSubviews(
-            titleLabel
-        )
-        
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubviews(titleLabel)
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),

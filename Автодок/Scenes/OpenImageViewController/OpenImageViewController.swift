@@ -76,18 +76,8 @@ final class OpenImageViewController: UIViewController {
     }
     
     private func addConstraints() {
-        view.addSubviews(
-            scrollView,
-            backView
-        )
-        
-        scrollView.addSubview(
-            photoImageView
-        )
-        
-        backView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        photoImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubviews(scrollView, backView)
+        scrollView.addSubviews(photoImageView)
         
         NSLayoutConstraint.activate([
             backView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),

@@ -60,11 +60,7 @@ final class DateNewsCell: UICollectionViewCell {
     }
     
     private func addConstraints() {
-        contentView.addSubviews(
-            titleLabel
-        )
-        
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubviews(titleLabel)
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),

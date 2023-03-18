@@ -55,11 +55,7 @@ final class PictureNewsCell: UICollectionViewCell {
     }
     
     private func addConstraints() {
-        contentView.addSubviews(
-            titleImageView
-        )
-        
-        titleImageView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubviews(titleImageView)
         
         NSLayoutConstraint.activate([
             titleImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
