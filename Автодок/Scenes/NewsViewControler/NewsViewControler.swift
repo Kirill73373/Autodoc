@@ -81,12 +81,12 @@ final class NewsViewControler: UIViewController {
             self.refresherControl.endRefreshing()
         }.store(in: &viewModel.cancellables)
         
-        scrollToTopView.subject.sink { [weak self] _ in
+        scrollToTopView.subject.sink { [weak self] in
             guard let self = self else { return }
             self.collectionView.scroll(row: 0)
         }.store(in: &viewModel.cancellables)
         
-        searchView.clearText.sink { [weak self] _ in
+        searchView.clearText.sink { [weak self] in
             guard let self = self else { return }
             self.reloadData()
         }.store(in: &viewModel.cancellables)

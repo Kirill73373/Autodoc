@@ -62,7 +62,7 @@ final class OpenNewsViewController: UIViewController {
     //MARK: - Private Method
     
     private func bindUI() {
-        backView.subject.sink { [weak self] _ in
+        backView.subject.sink { [weak self] in
             guard let self = self else { return }
             self.navigationController?.popViewController(animated: true)
         }.store(in: &viewModel.cancellables)
