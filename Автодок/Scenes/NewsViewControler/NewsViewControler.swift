@@ -170,7 +170,7 @@ extension NewsViewControler {
                         self.viewModel.modelCopy?.news = search ?? []
                         self.emptyImageView.isHidden = !(search?.isEmpty ?? false)
                     }
-                    self.reloadData()
+                    self.collectionView.animationReloadData()
                 } else {
                     self.reloadData()
                 }
