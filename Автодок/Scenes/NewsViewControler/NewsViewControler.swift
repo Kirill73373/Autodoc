@@ -149,6 +149,8 @@ final class NewsViewControler: UIViewController {
     }
 }
 
+// MARK: - Search Text Field Delegate
+
 extension NewsViewControler {
     
     private func addSearchDelegate() {
