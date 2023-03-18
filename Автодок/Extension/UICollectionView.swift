@@ -11,13 +11,19 @@ import UIKit
 extension UICollectionView {
     
     func scroll(row: Int) {
-        let indexPath = IndexPath(row: row, section: 0)
-        scrollToItem(at: indexPath, at: .top, animated: true)
+        let indexPath = IndexPath(row: 0, section: row)
+        scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
     }
     
     func registerCells(_ cell: UIView.Type...) {
         cell.forEach {
             register($0.self, forCellWithReuseIdentifier: String(describing: $0))
         }
+    }
+    
+    func animationReloadData() {
+        UIView.transition(with: self, duration: 0.25, options: [.allowAnimatedContent, .transitionCrossDissolve, .curveEaseInOut], animations: {
+            self.reloadData()
+        })
     }
 }

@@ -28,6 +28,12 @@ final class TitleNewsCell: UICollectionViewCell {
         }
     }
     
+    var isUpdateConstraints: Bool {
+        didSet{
+            addConstraints(isUpdateConstraints)
+        }
+    }
+    
     //MARK: - Override Method
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
@@ -35,7 +41,7 @@ final class TitleNewsCell: UICollectionViewCell {
         layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         return layoutAttributes
     }
-   
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         titleLabel.text = nil
@@ -44,9 +50,9 @@ final class TitleNewsCell: UICollectionViewCell {
     //MARK: - Initiation
     
     override init(frame: CGRect) {
+        isUpdateConstraints = false
         super.init(frame: frame)
         setupCellStyle()
-        addConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -59,18 +65,21 @@ final class TitleNewsCell: UICollectionViewCell {
         backgroundColor = .clear
     }
     
-    private func addConstraints() {
+    private func addConstraints(_ isUpdateConstraints: Bool) {
         contentView.addSubviews(
             titleLabel
         )
-        
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-        ])
+        if isUpdateConstraints {
+            titleLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+                titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+                titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+                titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            ])
+        } else {
+            
+        }
     }
 }

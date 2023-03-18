@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 final class NetworkService {
     
     private var baseURLString: String {

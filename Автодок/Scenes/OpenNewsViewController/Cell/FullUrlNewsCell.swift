@@ -35,7 +35,7 @@ final class FullUrlNewsCell: UICollectionViewCell {
         layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         return layoutAttributes
     }
-   
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         titleLabel.text = nil

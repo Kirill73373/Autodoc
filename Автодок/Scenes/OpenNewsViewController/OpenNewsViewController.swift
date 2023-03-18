@@ -23,8 +23,6 @@ final class OpenNewsViewController: UIViewController {
     
     private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 0
-        layout.minimumInteritemSpacing = 0
         layout.scrollDirection = .vertical
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.sectionInsetReference = .fromContentInset
@@ -38,8 +36,6 @@ final class OpenNewsViewController: UIViewController {
         )
         collection.backgroundColor = ColorHelper.whiteColor
         collection.showsVerticalScrollIndicator = false
-        collection.contentInsetAdjustmentBehavior = .never
-        collection.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         return collection
     }()
     
@@ -78,6 +74,15 @@ final class OpenNewsViewController: UIViewController {
         view.backgroundColor = ColorHelper.whiteColor
     }
     
+    private func showOpenImageViewController(_ model: NewsItemModel) {
+        let viewModel = OpenImageViewModel()
+        viewModel.urlStrng = model.titleImageURL
+        let viewController = OpenImageViewController(viewModel: viewModel)
+        viewController.modalTransitionStyle = .crossDissolve
+        viewController.modalPresentationStyle = .overFullScreen
+        present(viewController, animated: true)
+    }
+    
     private func addConstraints() {
         view.addSubviews(
             collectionView,
@@ -89,9 +94,9 @@ final class OpenNewsViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             backView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-            backView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-            backView.heightAnchor.constraint(equalToConstant: 50),
-            backView.widthAnchor.constraint(equalToConstant: 50),
+            backView.topAnchor.constraint(equalTo: view.topAnchor, constant: UIDevice.current.hasNotch ? 60 : 30),
+            backView.heightAnchor.constraint(equalToConstant: UIDevice.current.hasNotch ? 50 : 40),
+            backView.widthAnchor.constraint(equalToConstant: UIDevice.current.hasNotch ? 50 : 40),
             
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -101,25 +106,13 @@ final class OpenNewsViewController: UIViewController {
     }
 }
 
-extension OpenNewsViewController {
-    
-    private func showOpenImageViewController(_ model: NewsItemModel) {
-        let viewModel = OpenImageViewModel()
-        viewModel.urlStrng = model.titleImageURL
-        let viewController = OpenImageViewController(viewModel: viewModel)
-        viewController.modalTransitionStyle = .crossDissolve
-        viewController.modalPresentationStyle = .overFullScreen
-        present(viewController, animated: true)
-    }
-}
-
 // MARK: - Collection View Delegate
 
 extension OpenNewsViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = collectionView.frame.size
-        return CGSize(width: size.width, height: UIDevice.current.userInterfaceIdiom == .pad ? 500 : 300)
+        return CGSize(width: size.width, height: UIDevice.current.userInterfaceIdiom == .pad ? 500 : (UIDevice.current.hasNotch ? 300 : 200))
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -153,7 +146,7 @@ extension OpenNewsViewController: UICollectionViewDelegate, UICollectionViewData
         switch modelIsType.type {
         case .picture:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PictureNewsCell", for: indexPath) as? PictureNewsCell else { return UICollectionViewCell() }
-            cell.dataModel = viewModel.model
+            cell.configure(viewModel.model)
             return cell
         case .title:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TitleNewsCell", for: indexPath) as? TitleNewsCell else { return UICollectionViewCell() }

@@ -11,6 +11,11 @@ final class NewsCell: UICollectionViewCell {
     
     //MARK: - UI
     
+    private let containeView: UIView = {
+        let vw = UIView()
+        return vw
+    }()
+    
     private let titleImageView: UIImageView = {
         let img = UIImageView()
         img.contentMode = .scaleAspectFill
@@ -23,26 +28,25 @@ final class NewsCell: UICollectionViewCell {
     private let titleLabel: UILabel = {
         let lb = UILabel()
         lb.textColor = ColorHelper.blackColor
-        lb.font = .systemFont(ofSize: 16, weight: .regular)
+        lb.font = .systemFont(ofSize: 16, weight: .bold)
         lb.textAlignment = .left
         lb.numberOfLines = 2
         return lb
     }()
     
-    var dataModel: NewsItemModel? {
-        didSet {
-            guard let model = dataModel else{ return }
-            DispatchQueue.main.async {
-                self.titleImageView.loadImageCache(urlString: model.titleImageURL, size: 1000)
-                self.titleLabel.text = model.title
-            }
-        }
+    private var task: URLSessionDataTask?
+    
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        titleLabel.preferredMaxLayoutWidth = layoutAttributes.size.width - contentView.layoutMargins.left - contentView.layoutMargins.left
+        layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        return layoutAttributes
     }
     
     //MARK: - Initiation
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        task?.cancel()
         titleImageView.image = nil
         titleLabel.text = nil
     }
@@ -57,6 +61,16 @@ final class NewsCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Public Method
+    
+    func configure(_ model: NewsItemModel?) {
+        guard let modelCopy = model else{ return }
+        DispatchQueue.main.async {
+            self.task = self.titleImageView.loadImageCache(urlString: modelCopy.titleImageURL)
+        }
+        titleLabel.text = modelCopy.title
+    }
+    
     //MARK: - Private Method
     
     private func setupCellStyle() {
@@ -65,23 +79,33 @@ final class NewsCell: UICollectionViewCell {
     
     private func addConstraints() {
         contentView.addSubviews(
+            containeView
+        )
+        
+        containeView.addSubviews(
             titleImageView,
             titleLabel
         )
         
+        containeView.translatesAutoresizingMaskIntoConstraints = false
         titleImageView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            titleImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            titleImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            titleImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            titleImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -50),
+            containeView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            containeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            containeView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            containeView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            titleImageView.topAnchor.constraint(equalTo: containeView.topAnchor),
+            titleImageView.trailingAnchor.constraint(equalTo: containeView.trailingAnchor),
+            titleImageView.leadingAnchor.constraint(equalTo: containeView.leadingAnchor),
+            titleImageView.heightAnchor.constraint(equalToConstant: 200),
             
             titleLabel.topAnchor.constraint(equalTo: titleImageView.bottomAnchor, constant: 10),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            titleLabel.trailingAnchor.constraint(equalTo: containeView.trailingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: containeView.leadingAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: containeView.bottomAnchor)
         ])
     }
 }

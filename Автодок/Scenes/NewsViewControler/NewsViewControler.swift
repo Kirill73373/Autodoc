@@ -23,15 +23,13 @@ final class NewsViewControler: UIViewController {
     private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 40
-        layout.minimumInteritemSpacing = 10
         layout.scrollDirection = .vertical
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.registerCells(NewsCell.self)
         collection.backgroundColor = ColorHelper.whiteColor
         collection.showsVerticalScrollIndicator = false
-        collection.contentInsetAdjustmentBehavior = .never
-        collection.contentInset = UIEdgeInsets(top: 135, left: 10, bottom: 100, right: 10)
-        collection.alwaysBounceVertical = true
+        collection.contentInset = UIEdgeInsets(top: 85, left: 10, bottom: 100, right: 10)
         return collection
     }()
     
@@ -76,38 +74,47 @@ final class NewsViewControler: UIViewController {
     //MARK: - Private Method
     
     private func bindUI() {
-        viewModel.subjectModel.receive(on: DispatchQueue.main)
-            .sink { [weak self] model in
-                guard let self = self else { return }
-                self.viewModel.model = model
-                self.viewModel.modelCopy = self.viewModel.model
-                self.emptyImageView.isHidden = !model.news.isEmpty
-                UIView.transition(with: self.collectionView, duration: 0.25, options: [.allowAnimatedContent, .transitionCrossDissolve, .curveEaseInOut], animations: {
-                    self.collectionView.reloadData()
-                })
-                self.refresherControl.endRefreshing()
-            }.store(in: &viewModel.cancellables)
+        viewModel.subjectModel.receive(on: DispatchQueue.main).sink { [weak self] model in
+            guard let self = self else { return }
+            self.viewModel.model = model
+            self.reloadData()
+            self.refresherControl.endRefreshing()
+        }.store(in: &viewModel.cancellables)
         
-        scrollToTopView.subject
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.collectionView.scroll(row: 0)
-            }.store(in: &viewModel.cancellables)
+        scrollToTopView.subject.sink { [weak self] _ in
+            guard let self = self else { return }
+            self.collectionView.scroll(row: 0)
+        }.store(in: &viewModel.cancellables)
         
-        searchView.clearText
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.reloadData()
-            }.store(in: &viewModel.cancellables)
+        searchView.clearText.sink { [weak self] _ in
+            guard let self = self else { return }
+            self.reloadData()
+        }.store(in: &viewModel.cancellables)
+        
+        NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+            guard let self = self else { return }
+            self.viewModel.getNewsRequest()
+        }.store(in: &viewModel.cancellables)
+    }
+    
+    private func reloadData() {
+        viewModel.modelCopy = viewModel.model
+        emptyImageView.isHidden = !(viewModel.modelCopy?.news.isEmpty ?? true)
+        collectionView.animationReloadData()
+    }
+    
+    private func showOpenNewsViewController(_ model: NewsItemModel) {
+        let viewModel = OpenNewsViewModel()
+        viewModel.model = model
+        let viewController = OpenNewsViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     private func setupStyleView() {
-        viewModel.getNewsRequest()
         collectionView.delegate = self
         collectionView.dataSource = self
         view.backgroundColor = ColorHelper.whiteColor
         navigationController?.navigationBar.isHidden = true
-        collectionView.addSubview(refresherControl)
         refresherControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
     }
     
@@ -123,6 +130,8 @@ final class NewsViewControler: UIViewController {
             scrollToTopView
         )
         
+        collectionView.addSubview(refresherControl)
+        
         emptyImageView.translatesAutoresizingMaskIntoConstraints = false
         searchView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -134,7 +143,7 @@ final class NewsViewControler: UIViewController {
             emptyImageView.heightAnchor.constraint(equalToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 400 : 200),
             emptyImageView.widthAnchor.constraint(equalToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 450 : 250),
             
-            searchView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
+            searchView.topAnchor.constraint(equalTo: view.topAnchor, constant: UIDevice.current.hasNotch ? 60 : 30),
             searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             searchView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             searchView.heightAnchor.constraint(equalToConstant: 45),
@@ -155,46 +164,28 @@ final class NewsViewControler: UIViewController {
 extension NewsViewControler {
     
     private func addSearchDelegate() {
-        searchView.typeDelegate
-            .sink { [weak self] type in
-                guard let self = self else { return }
-                switch type {
-                case .textFieldShouldReturn:
-                    UIView.transition(with: self.collectionView, duration: 0.25, options: [.allowAnimatedContent, .transitionCrossDissolve], animations: {
-                        self.collectionView.reloadData()
-                    })
-                case .textFieldDidChangeSelection(let text):
-                    guard let modelNews = self.viewModel.model else { return }
-                    if text.count != 0 {
-                        self.reloadData()
-                        if !modelNews.news.isEmpty {
-                            let search = self.viewModel.model?.news.filter { model in
-                                return model.title.range(of: text, options: .caseInsensitive, range: nil, locale: nil) != nil
-                            }
-                            self.viewModel.modelCopy?.news = search ?? []
-                            self.emptyImageView.isHidden = !(search?.isEmpty ?? false)
+        searchView.typeDelegate.sink { [weak self] type in
+            guard let self = self else { return }
+            switch type {
+            case .textFieldShouldReturn:
+                self.collectionView.animationReloadData()
+            case .textFieldDidChangeSelection(let text):
+                guard let modelNews = self.viewModel.model else { return }
+                if text.count != 0 {
+                    self.reloadData()
+                    if !modelNews.news.isEmpty {
+                        let search = self.viewModel.model?.news.filter { model in
+                            return model.title.range(of: text, options: .caseInsensitive, range: nil, locale: nil) != nil
                         }
-                    } else {
-                        self.reloadData()
+                        self.viewModel.modelCopy?.news = search ?? []
+                        self.emptyImageView.isHidden = !(search?.isEmpty ?? false)
                     }
-                    self.collectionView.reloadData()
+                    self.reloadData()
+                } else {
+                    self.reloadData()
                 }
-            }.store(in: &viewModel.cancellables)
-    }
-    
-    private func reloadData() {
-        viewModel.modelCopy = viewModel.model
-        emptyImageView.isHidden = !(viewModel.modelCopy?.news.isEmpty ?? false)
-        UIView.transition(with: self.collectionView, duration: 0.25, options: [.allowAnimatedContent, .transitionCrossDissolve, .curveEaseInOut], animations: {
-            self.collectionView.reloadData()
-        })
-    }
-    
-    private func showOpenNewsViewController(_ model: NewsItemModel) {
-        let viewModel = OpenNewsViewModel()
-        viewModel.model = model
-        let viewController = OpenNewsViewController(viewModel: viewModel)
-        navigationController?.pushViewController(viewController, animated: true)
+            }
+        }.store(in: &viewModel.cancellables)
     }
 }
 
@@ -203,8 +194,7 @@ extension NewsViewControler {
 extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = collectionView.frame.size
-        return CGSize(width: (size.width - 40) / 2, height: UIDevice.current.userInterfaceIdiom == .pad ? 400 : 200)
+        return CGSize(width: view.frame.width - 20, height: .zero)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -220,7 +210,7 @@ extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         UIView.animate(withDuration: 0.05, delay: 0) {
-            self.searchView.alpha = scrollView.contentOffset.y >= -110 ? 0 : 1
+            self.searchView.alpha = scrollView.contentOffset.y >= (UIDevice.current.hasNotch ? -110 : -90) ? 0 : 1
             self.scrollToTopView.alpha = scrollView.contentOffset.y >= 100 ? 0.8 : 0
             self.scrollToTopView.isHidden = scrollView.contentOffset.y <= 100
         }
@@ -229,7 +219,7 @@ extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NewsCell", for: indexPath) as? NewsCell else { return UICollectionViewCell() }
-        cell.dataModel = viewModel.modelCopy?.news[indexPath.row]
+        cell.configure(viewModel.modelCopy?.news[indexPath.row])
         return cell
     }
 }

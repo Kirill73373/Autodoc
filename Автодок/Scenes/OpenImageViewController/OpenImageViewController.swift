@@ -27,7 +27,7 @@ final class OpenImageViewController: UIViewController {
         sv.maximumZoomScale = 5.0
         sv.showsVerticalScrollIndicator = false
         return sv
-      }()
+    }()
     
     private let photoImageView: UIImageView = {
         let img = UIImageView()
@@ -37,6 +37,7 @@ final class OpenImageViewController: UIViewController {
         return img
     }()
     
+    private var task: URLSessionDataTask?
     private let viewModel: OpenImageViewModel
     
     //MARK: - Initiation
@@ -70,7 +71,7 @@ final class OpenImageViewController: UIViewController {
         scrollView.delegate = self
         view.backgroundColor = ColorHelper.blackColor.withAlphaComponent(0.9)
         DispatchQueue.main.async {
-            self.photoImageView.loadImageCache(urlString: self.viewModel.urlStrng ?? "", size: 1000)
+            self.task = self.photoImageView.loadImageCache(urlString: self.viewModel.urlStrng ?? "")
         }
     }
     
@@ -90,9 +91,9 @@ final class OpenImageViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             backView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-            backView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-            backView.heightAnchor.constraint(equalToConstant: 50),
-            backView.widthAnchor.constraint(equalToConstant: 50),
+            backView.topAnchor.constraint(equalTo: view.topAnchor, constant: UIDevice.current.hasNotch ? 60 : 30),
+            backView.heightAnchor.constraint(equalToConstant: UIDevice.current.hasNotch ? 50 : 40),
+            backView.widthAnchor.constraint(equalToConstant: UIDevice.current.hasNotch ? 50 : 40),
             
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -104,7 +105,7 @@ final class OpenImageViewController: UIViewController {
             photoImageView.widthAnchor.constraint(equalToConstant: view.frame.width),
             photoImageView.heightAnchor.constraint(equalToConstant: view.frame.height)
         ])
-      }
+    }
 }
 
 // MARK: - Scroll View Delegate

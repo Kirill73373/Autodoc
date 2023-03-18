@@ -21,7 +21,7 @@ struct NewsItemModel: Decodable {
     let fullURL: String
     let titleImageURL: String
     let categoryType: CategoryType
-
+    
     enum CodingKeys: String, CodingKey {
         case id, title, description, publishedDate, url
         case fullURL = "fullUrl"

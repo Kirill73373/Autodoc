@@ -12,13 +12,13 @@ let imageCache = NSCache<NSString, UIImage>()
 
 extension UIImageView {
     
-    func loadImageCache(urlString: String, size: CGFloat) {
+    func loadImageCache(urlString: String) -> URLSessionDataTask? {
         image = nil
-        if let image = imageCache.object(forKey: urlString as NSString) {
-            DispatchQueue.main.async {
-                self.image = image.resizeWithWidth(width: size)
-            }
-            return
+        
+        guard let url = URL(string: urlString) else { return nil }
+        if let imageToCache = imageCache.object(forKey: urlString as NSString) {
+            self.image = imageToCache
+            return nil
         }
         
         let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
@@ -27,20 +27,21 @@ extension UIImageView {
         activityIndicator.startAnimating()
         activityIndicator.center = self.center
         
-        guard image == nil, let url = URL(string: urlString) else { return }
-        URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
-            if error != nil {
-                print(error?.localizedDescription ?? "")
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let err = error {
+                print(err.localizedDescription)
                 return
             }
             
-            if let downloadedImage = UIImage(data: data ?? Data()) {
-                DispatchQueue.main.async {
-                    imageCache.setObject(downloadedImage.resizeWithWidth(width: size) ?? UIImage(), forKey: urlString as NSString)
-                    self.image = downloadedImage.resizeWithWidth(width: size)
-                    activityIndicator.removeFromSuperview()
-                }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                let imageToCache = UIImage(data: data ?? Data())
+                imageCache.setObject(imageToCache ?? UIImage(), forKey: urlString as NSString)
+                self.image = imageToCache
+                activityIndicator.removeFromSuperview()
             }
-        }).resume()
+        }
+        
+        task.resume()
+        return task
     }
 }
