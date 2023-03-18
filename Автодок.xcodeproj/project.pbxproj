@@ -38,6 +38,7 @@
 		BD71A98929C411DA00E6A86E /* OpenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD71A98829C411DA00E6A86E /* OpenImageViewController.swift */; };
 		BD71A98C29C411EE00E6A86E /* OpenImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD71A98B29C411EE00E6A86E /* OpenImageViewModel.swift */; };
 		BD71A99329C659AC00E6A86E /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD71A99229C659AC00E6A86E /* UIDevice.swift */; };
+		BD71A99529C66C7200E6A86E /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD71A99429C66C7200E6A86E /* UIViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +75,7 @@
 		BD71A98829C411DA00E6A86E /* OpenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenImageViewController.swift; sourceTree = "<group>"; };
 		BD71A98B29C411EE00E6A86E /* OpenImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenImageViewModel.swift; sourceTree = "<group>"; };
 		BD71A99229C659AC00E6A86E /* UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
+		BD71A99429C66C7200E6A86E /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 				BD71A99229C659AC00E6A86E /* UIDevice.swift */,
 				BD71A96D29C3AA7E00E6A86E /* UIImageView.swift */,
 				BD71A96329C38CA000E6A86E /* UICollectionView.swift */,
+				BD71A99429C66C7200E6A86E /* UIViewController.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -370,6 +373,7 @@
 				BD71A92629C32BFB00E6A86E /* AppDelegate.swift in Sources */,
 				BD71A95829C3380C00E6A86E /* OpenNewsViewModel.swift in Sources */,
 				BD71A97C29C3F28F00E6A86E /* FullUrlNewsCell.swift in Sources */,
+				BD71A99529C66C7200E6A86E /* UIViewController.swift in Sources */,
 				BD71A93D29C32ECA00E6A86E /* ColorHelper.swift in Sources */,
 				BD71A96E29C3AA7E00E6A86E /* UIImageView.swift in Sources */,
 				BD71A98429C3FD9000E6A86E /* String.swift in Sources */,

@@ -79,7 +79,6 @@ final class SearchView: UIView {
     }
     
     @objc private func gestureClearText() {
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.7)
         searchTextView.text?.removeAll()
         clearTextIconView.isHidden = true
         clearText.send()

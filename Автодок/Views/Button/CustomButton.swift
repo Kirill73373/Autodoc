@@ -99,11 +99,6 @@ final class CustomButton: UIButton {
         setupViewStyle()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.7)
-    }
-    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         guard isActiveTouchInside else { return }

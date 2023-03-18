@@ -13,5 +13,9 @@ final class OpenImageViewModel {
     //MARK: - Public property
     
     var cancellables = Set<AnyCancellable>()
-    var urlStrng: String?
+    let urlStrng: String
+    
+    init(urlStrng: String) {
+        self.urlStrng = urlStrng
+    }
 }

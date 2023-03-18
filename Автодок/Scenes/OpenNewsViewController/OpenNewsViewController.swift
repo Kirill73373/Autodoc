@@ -25,7 +25,6 @@ final class OpenNewsViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        layout.sectionInsetReference = .fromContentInset
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.registerCells(
             PictureNewsCell.self,
@@ -75,11 +74,9 @@ final class OpenNewsViewController: UIViewController {
     }
     
     private func showOpenImageViewController(_ model: NewsItemModel) {
-        let viewModel = OpenImageViewModel()
-        viewModel.urlStrng = model.titleImageURL
+        let viewModel = OpenImageViewModel(urlStrng: model.titleImageURL)
         let viewController = OpenImageViewController(viewModel: viewModel)
-        viewController.modalTransitionStyle = .crossDissolve
-        viewController.modalPresentationStyle = .overFullScreen
+        viewController.style(.crossDissolve, presentationStyle: .overFullScreen)
         present(viewController, animated: true)
     }
     
@@ -121,14 +118,12 @@ extension OpenNewsViewController: UICollectionViewDelegate, UICollectionViewData
         let modelIsType = viewModel.items[indexPath.row]
         switch modelIsType.type {
         case .picture:
-            guard let model = viewModel.model else { return }
-            showOpenImageViewController(model)
+            showOpenImageViewController(viewModel.model)
         case .fullUrl:
-            guard let model = viewModel.model, let url = URL(string: model.fullURL) else {
+            guard let url = URL(string: viewModel.model.fullURL) else {
                 AlertHelper.shared.showAlert(title: "Ссылка не работает", actionTitle: "Закрыть")
                 return
             }
-            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.7)
             UIApplication.shared.open(url)
         default:
             break

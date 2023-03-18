@@ -33,7 +33,6 @@ final class OpenImageViewController: UIViewController {
         let img = UIImageView()
         img.contentMode = .scaleAspectFit
         img.image = ImageHelper.appLaunchIcon
-        img.clipsToBounds = true
         return img
     }()
     
@@ -71,7 +70,7 @@ final class OpenImageViewController: UIViewController {
         scrollView.delegate = self
         view.backgroundColor = ColorHelper.blackColor.withAlphaComponent(0.9)
         DispatchQueue.main.async {
-            self.task = self.photoImageView.loadImageCache(urlString: self.viewModel.urlStrng ?? "")
+            self.task = self.photoImageView.loadImageCache(urlString: self.viewModel.urlStrng)
         }
     }
     

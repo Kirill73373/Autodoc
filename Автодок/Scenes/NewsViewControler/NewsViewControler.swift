@@ -104,8 +104,7 @@ final class NewsViewControler: UIViewController {
     }
     
     private func showOpenNewsViewController(_ model: NewsItemModel) {
-        let viewModel = OpenNewsViewModel()
-        viewModel.model = model
+        let viewModel = OpenNewsViewModel(model: model)
         let viewController = OpenNewsViewController(viewModel: viewModel)
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -187,7 +186,6 @@ extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.7)
         guard let model = viewModel.modelCopy?.news[indexPath.row] else { return }
         showOpenNewsViewController(model)
     }
