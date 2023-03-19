@@ -7,25 +7,36 @@
 
 import Foundation
 import Combine
+import UIKit
 
 final class OpenNewsViewModel {
     
-    //MARK: - Public property
+    private(set) var cellViewModels = [CellViewModelProtocol]()
+    
+    //MARK: - Public Property
     
     let model: NewsItemModel
     var cancellables = Set<AnyCancellable>()
     
-    //MARK: - Public Lazy property
-    
-    lazy var items: [OpenNewsModel] = [
-        OpenNewsModel(type: .picture, info: model.titleImageURL),
-        OpenNewsModel(type: .title, info: model.title),
-        OpenNewsModel(type: .description, info: model.description),
-        OpenNewsModel(type: .fullUrl, info: model.title),
-        OpenNewsModel(type: .date, info: model.publishedDate)
-    ]
-    
+    //MARK: - Initilization
+   
     init(model: NewsItemModel) {
         self.model = model
+    }
+    
+    //MARK: - Public Method
+    
+    func getCellViewModel(at indexPath: IndexPath) -> CellViewModelProtocol {
+        return cellViewModels[indexPath.row]
+    }
+        
+    func appendCell() {
+        cellViewModels = [
+            PictureNewsCellViewModel(model: model),
+            TitleNewsCellViewModel(model: model),
+            DescriptionNewsCellViewModel(model: model),
+            FullUrlNewsCellViewModel(model: model),
+            DateNewsCellViewModel(model: model)
+        ]
     }
 }

@@ -28,10 +28,7 @@ extension UIImageView {
         activityIndicator.center = self.center
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let err = error {
-                print(err.localizedDescription)
-                return
-            }
+            if let _ = error { return }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 let imageToCache = UIImage(data: data ?? Data())

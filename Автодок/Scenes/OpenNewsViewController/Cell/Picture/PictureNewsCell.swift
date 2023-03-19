@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PictureNewsCell: UICollectionViewCell {
+final class PictureNewsCell: UICollectionViewCell, MyCellProtocol {
     
     //MARK: - UI
     
@@ -19,8 +19,21 @@ final class PictureNewsCell: UICollectionViewCell {
         return img
     }()
     
+    //MARK: - Public Property
+    
     private var task: URLSessionDataTask?
     
+    //MARK: - Public Property
+    
+    var viewModel: CellViewModelProtocol? {
+        didSet {
+            guard let model = viewModel?.model else { return }
+            DispatchQueue.main.async {
+                self.task = self.titleImageView.loadImageCache(urlString: model.titleImageURL)
+            }
+        }
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
         task?.cancel()

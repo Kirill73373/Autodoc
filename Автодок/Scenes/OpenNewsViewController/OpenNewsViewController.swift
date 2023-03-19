@@ -26,13 +26,7 @@ final class OpenNewsViewController: UIViewController {
         layout.scrollDirection = .vertical
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.registerCells(
-            PictureNewsCell.self,
-            TitleNewsCell.self,
-            DescriptionNewsCell.self,
-            FullUrlNewsCell.self,
-            DateNewsCell.self
-        )
+        collection.registerCells(PictureNewsCell.self, TitleNewsCell.self, DescriptionNewsCell.self, FullUrlNewsCell.self, DateNewsCell.self)
         collection.backgroundColor = ColorHelper.whiteColor
         collection.showsVerticalScrollIndicator = false
         return collection
@@ -68,6 +62,7 @@ final class OpenNewsViewController: UIViewController {
     }
     
     private func setupStyleView() {
+        viewModel.appendCell()
         collectionView.delegate = self
         collectionView.dataSource = self
         view.backgroundColor = ColorHelper.whiteColor
@@ -107,7 +102,7 @@ extension OpenNewsViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.items.count
+        return viewModel.cellViewModels.count
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -115,8 +110,8 @@ extension OpenNewsViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let modelIsType = viewModel.items[indexPath.row]
-        switch modelIsType.type {
+        let model = viewModel.getCellViewModel(at: indexPath)
+        switch model.type {
         case .picture:
             showOpenImageViewController(viewModel.model)
         case .fullUrl:
@@ -131,29 +126,9 @@ extension OpenNewsViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let modelIsType = viewModel.items[indexPath.row]
-        switch modelIsType.type {
-        case .picture:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PictureNewsCell", for: indexPath) as? PictureNewsCell else { return UICollectionViewCell() }
-            cell.configure(viewModel.model)
-            return cell
-        case .title:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TitleNewsCell", for: indexPath) as? TitleNewsCell else { return UICollectionViewCell() }
-            cell.dataModel = viewModel.model
-            return cell
-        case .description:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DescriptionNewsCell", for: indexPath) as? DescriptionNewsCell else { return UICollectionViewCell() }
-            cell.dataModel = viewModel.model
-            return cell
-        case .fullUrl:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FullUrlNewsCell", for: indexPath) as? FullUrlNewsCell else { return UICollectionViewCell() }
-            cell.dataModel = viewModel.model
-            return cell
-        case .date:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateNewsCell", for: indexPath) as? DateNewsCell else { return UICollectionViewCell() }
-            cell.dataModel = viewModel.model
-            return cell
-            
-        }
+        let model = viewModel.getCellViewModel(at: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: model.identifier, for: indexPath)
+        cell.viewModel(viewModel.getCellViewModel(at: indexPath))
+        return cell
     }
 }

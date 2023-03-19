@@ -7,11 +7,6 @@
 
 import Foundation
 
-struct OpenNewsModel {
-    var type: OpenNewsType
-    var info: String
-}
-
 enum OpenNewsType: Int {
     case picture
     case title

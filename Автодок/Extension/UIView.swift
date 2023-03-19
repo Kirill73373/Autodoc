@@ -14,7 +14,6 @@ extension UIView {
             addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false
         }
-        
     }
     
     func rotateWithAnimation(angle: CGFloat, duration: CGFloat? = nil) {

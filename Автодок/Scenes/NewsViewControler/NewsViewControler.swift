@@ -22,9 +22,7 @@ final class NewsViewControler: UIViewController {
     
     private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 40
         layout.scrollDirection = .vertical
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.registerCells(NewsCell.self)
         collection.backgroundColor = ColorHelper.whiteColor
@@ -74,9 +72,8 @@ final class NewsViewControler: UIViewController {
     //MARK: - Private Method
     
     private func bindUI() {
-        viewModel.subjectModel.receive(on: DispatchQueue.main).sink { [weak self] model in
+        viewModel.subjectModel.receive(on: DispatchQueue.main).sink { [weak self] in
             guard let self = self else { return }
-            self.viewModel.model = model
             self.reloadData()
             self.refresherControl.endRefreshing()
         }.store(in: &viewModel.cancellables)
@@ -98,8 +95,8 @@ final class NewsViewControler: UIViewController {
     }
     
     private func reloadData() {
-        viewModel.modelCopy = viewModel.model
-        emptyImageView.isHidden = !(viewModel.modelCopy?.news.isEmpty ?? true)
+        viewModel.cellSearchViewModels = viewModel.cellViewModels
+        emptyImageView.isHidden = !viewModel.cellSearchViewModels.isEmpty
         collectionView.animationReloadData()
     }
     
@@ -160,15 +157,14 @@ extension NewsViewControler {
             case .textFieldShouldReturn:
                 self.collectionView.animationReloadData()
             case .textFieldDidChangeSelection(let text):
-                guard let modelNews = self.viewModel.model else { return }
                 if text.count != 0 {
                     self.reloadData()
-                    if !modelNews.news.isEmpty {
-                        let search = self.viewModel.model?.news.filter { model in
-                            return model.title.range(of: text, options: .caseInsensitive, range: nil, locale: nil) != nil
+                    if !self.viewModel.cellViewModels.isEmpty {
+                        let search = self.viewModel.cellViewModels.filter { model in
+                            return model.model?.title.range(of: text, options: .caseInsensitive, range: nil, locale: nil) != nil
                         }
-                        self.viewModel.modelCopy?.news = search ?? []
-                        self.emptyImageView.isHidden = !(search?.isEmpty ?? false)
+                        self.viewModel.cellSearchViewModels = search
+                        self.emptyImageView.isHidden = !search.isEmpty
                     }
                     self.collectionView.animationReloadData()
                 } else {
@@ -184,17 +180,18 @@ extension NewsViewControler {
 extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width - 20, height: .zero)
+        let size = collectionView.frame.size
+        return CGSize(width: size.width - 20, height: UIDevice.current.userInterfaceIdiom == .pad ? 500 : 280)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let model = viewModel.modelCopy?.news[indexPath.row] else { return }
+        guard let model = viewModel.getCellViewModel(at: indexPath).model else { return }
+        searchView.clearTextField()
         showOpenNewsViewController(model)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let model = viewModel.modelCopy else { return 0 }
-        return model.news.count
+        return viewModel.cellSearchViewModels.count
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -208,7 +205,7 @@ extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NewsCell", for: indexPath) as? NewsCell else { return UICollectionViewCell() }
-        cell.configure(viewModel.modelCopy?.news[indexPath.row])
+        cell.viewModel = viewModel.cellSearchViewModels[indexPath.row]
         return cell
     }
 }

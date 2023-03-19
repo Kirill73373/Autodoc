@@ -16,12 +16,18 @@ final class NewsViewModel {
     
     //MARK: - Private(Read Only) Property
     
-    private(set) var subjectModel = PassthroughSubject<NewsModel, Never>()
+    private(set) var subjectModel = PassthroughSubject<Void, Never>()
+    
+    private(set) var cellViewModels = [NewsCellViewModel]() {
+        didSet {
+            subjectModel.send()
+        }
+    }
     
     //MARK: - Public Property
     
-    var model: NewsModel?
-    var modelCopy: NewsModel?
+    var cellSearchViewModels = [NewsCellViewModel]()
+    
     var cancellables = Set<AnyCancellable>()
     
     //MARK: - Initiation
@@ -38,10 +44,19 @@ final class NewsViewModel {
             do {
                 guard let networkService = networkService else { return }
                 let response = try await networkService.request(.news, for: NewsModel.self)
-                subjectModel.send(response ?? NewsModel(news: [], totalCount: 0))
+                cellViewModels.removeAll()
+                response?.news.forEach({ model in
+                    cellViewModels.append(NewsCellViewModel(model: model))
+                })
+                cellSearchViewModels = cellViewModels
+                subjectModel.send()
             } catch {
                 print(error)
             }
         }
+    }
+    
+    func getCellViewModel(at indexPath: IndexPath) -> NewsCellViewModel {
+        return cellSearchViewModels[indexPath.row]
     }
 }

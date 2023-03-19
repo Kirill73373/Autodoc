@@ -63,6 +63,13 @@ final class SearchView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Public Method
+    
+    func clearTextField() {
+        searchTextView.text?.removeAll()
+        clearTextIconView.isHidden = true
+    }
+    
     //MARK: - Private Method
     
     private func addGestureClearText() {
