@@ -86,7 +86,7 @@ final class NewsCell: UICollectionViewCell {
             titleImageView.topAnchor.constraint(equalTo: containeView.topAnchor),
             titleImageView.trailingAnchor.constraint(equalTo: containeView.trailingAnchor),
             titleImageView.leadingAnchor.constraint(equalTo: containeView.leadingAnchor),
-            titleImageView.heightAnchor.constraint(equalToConstant: 200),
+            titleImageView.bottomAnchor.constraint(equalTo: containeView.bottomAnchor, constant: -50),
             
             titleLabel.topAnchor.constraint(equalTo: titleImageView.bottomAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: containeView.trailingAnchor),

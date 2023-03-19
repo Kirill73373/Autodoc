@@ -23,11 +23,17 @@ final class NewsViewControler: UIViewController {
     private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 40
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.registerCells(NewsCell.self)
         collection.backgroundColor = ColorHelper.whiteColor
         collection.showsVerticalScrollIndicator = false
-        collection.contentInset = UIEdgeInsets(top: 85, left: 10, bottom: 100, right: 10)
+        collection.contentInset = UIEdgeInsets(
+            top: UIDevice.current.userInterfaceIdiom == .pad ? 130 : 85,
+            left: 10,
+            bottom: 100,
+            right: 10
+        )
         return collection
     }()
     
@@ -181,7 +187,7 @@ extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = collectionView.frame.size
-        return CGSize(width: size.width - 20, height: UIDevice.current.userInterfaceIdiom == .pad ? 500 : 280)
+        return CGSize(width: (size.width - 40) / 2, height: UIDevice.current.userInterfaceIdiom == .pad ? 350 : 200)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
