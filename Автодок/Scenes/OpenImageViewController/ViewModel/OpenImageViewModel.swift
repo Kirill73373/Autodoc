@@ -12,7 +12,6 @@ final class OpenImageViewModel {
     
     //MARK: - Public property
     
-    var task: URLSessionDataTask?
     var cancellables = Set<AnyCancellable>()
     let urlStrng: String
     

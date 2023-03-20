@@ -12,13 +12,21 @@ let imageCache = NSCache<NSString, UIImage>()
 
 extension UIImageView {
     
-    func loadImageCache(urlString: String) -> URLSessionDataTask? {
+    func loadImage(urlString: String) {
+        Task {
+            do {
+                try await loadImageCache(urlString: urlString)
+            }
+        }
+    }
+    
+    func loadImageCache(urlString: String) async throws {
         image = nil
         
-        guard let url = URL(string: urlString) else { return nil }
+        guard let url = URL(string: urlString) else { return }
         if let imageToCache = imageCache.object(forKey: urlString as NSString) {
             self.image = imageToCache
-            return nil
+            return
         }
         
         let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
@@ -27,18 +35,13 @@ extension UIImageView {
         activityIndicator.startAnimating()
         activityIndicator.center = self.center
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let _ = error { return }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                let imageToCache = UIImage(data: data ?? Data())
-                imageCache.setObject(imageToCache ?? UIImage(), forKey: urlString as NSString)
-                self.image = imageToCache
-                activityIndicator.removeFromSuperview()
-            }
-        }
+        let urlRequest = URLRequest(url: url)
         
-        task.resume()
-        return task
+        let (data, _) = try await URLSession.shared.data(for: urlRequest)
+        
+        let imageToCache = UIImage(data: data)
+        imageCache.setObject(imageToCache ?? UIImage(), forKey: urlString as NSString)
+        self.image = imageToCache
+        activityIndicator.removeFromSuperview()
     }
 }

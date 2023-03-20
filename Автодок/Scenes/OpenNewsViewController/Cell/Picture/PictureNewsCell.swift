@@ -21,15 +21,11 @@ final class PictureNewsCell: UICollectionViewCell, MyCellProtocol {
     
     //MARK: - Public Property
     
-    private var task: URLSessionDataTask?
-    
-    //MARK: - Public Property
-    
     var viewModel: CellNewsViewModelProtocol? {
         didSet {
             guard let model = viewModel?.model else { return }
             DispatchQueue.main.async {
-                self.task = self.titleImageView.loadImageCache(urlString: model.titleImageURL)
+                self.titleImageView.loadImage(urlString: model.titleImageURL)
             }
         }
     }
@@ -38,7 +34,6 @@ final class PictureNewsCell: UICollectionViewCell, MyCellProtocol {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        task?.cancel()
         titleImageView.image = nil
     }
     
@@ -59,7 +54,7 @@ final class PictureNewsCell: UICollectionViewCell, MyCellProtocol {
     func configure(_ model: NewsItemModel?) {
         guard let modelCopy = model else { return }
         DispatchQueue.main.async {
-            self.task = self.titleImageView.loadImageCache(urlString: modelCopy.titleImageURL)
+            self.titleImageView.loadImage(urlString: modelCopy.titleImageURL)
         }
     }
     

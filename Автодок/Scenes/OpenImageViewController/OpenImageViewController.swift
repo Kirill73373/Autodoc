@@ -71,7 +71,7 @@ final class OpenImageViewController: UIViewController {
         scrollView.delegate = self
         view.backgroundColor = ColorHelper.blackColor.withAlphaComponent(0.9)
         DispatchQueue.main.async {
-            self.viewModel.task = self.photoImageView.loadImageCache(urlString: self.viewModel.urlStrng)
+            self.photoImageView.loadImage(urlString: self.viewModel.urlStrng)
         }
     }
     

@@ -34,17 +34,13 @@ final class NewsCell: UICollectionViewCell, MyCellProtocol {
         return lb
     }()
     
-    //MARK: - Private Property
-    
-    private var task: URLSessionDataTask?
-    
     //MARK: - Public Property
 
     var viewModel: CellNewsViewModelProtocol? {
         didSet {
             guard let model = viewModel?.model else{ return }
             DispatchQueue.main.async {
-                self.task = self.titleImageView.loadImageCache(urlString: model.titleImageURL)
+                self.titleImageView.loadImage(urlString: model.titleImageURL)
             }
             titleLabel.text = model.title
         }
@@ -54,7 +50,6 @@ final class NewsCell: UICollectionViewCell, MyCellProtocol {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        task?.cancel()
         titleImageView.image = nil
         titleLabel.text = nil
     }
