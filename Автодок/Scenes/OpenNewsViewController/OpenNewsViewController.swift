@@ -98,7 +98,7 @@ extension OpenNewsViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = collectionView.frame.size
-        return CGSize(width: size.width, height: UIDevice.current.userInterfaceIdiom == .pad ? 500 : (UIDevice.current.hasNotch ? 300 : 200))
+        return CGSize(width: size.width, height: UIDevice.isIpad ? 500 : (UIDevice.current.hasNotch ? 300 : 200))
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

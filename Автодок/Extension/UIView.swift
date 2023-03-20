@@ -16,17 +16,6 @@ extension UIView {
         }
     }
     
-    func rotateWithAnimation(angle: CGFloat, duration: CGFloat? = nil) {
-        let pathAnimation = CABasicAnimation(keyPath: "transform.rotation")
-        pathAnimation.duration = CFTimeInterval(duration ?? 1.0)
-        pathAnimation.fromValue = 0
-        pathAnimation.toValue = angle
-        pathAnimation.repeatCount = .infinity
-        pathAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-        transform = transform.rotated(by: angle)
-        layer.add(pathAnimation, forKey: "transform.rotation")
-    }
-    
     func usingSpringWithDampingAnimation(withDuration: CGFloat = 1, usingSpringWithDamping: CGFloat = 1, delay: CGFloat = 0.5, completionAnimate: (() -> Void)?, completion: (() -> Void)? = nil) {
         UIView.animate(withDuration: withDuration, delay: delay, usingSpringWithDamping: usingSpringWithDamping, initialSpringVelocity: 8, options: [.curveEaseInOut, .allowUserInteraction, .curveLinear]) {
             completionAnimate?()
@@ -36,13 +25,13 @@ extension UIView {
     }
     
     enum CornerType {
+        case all
+        case top
+        case bottom
         case topLeft
         case topRight
         case bottomLeft
         case bottomRight
-        case all
-        case top
-        case bottom
         case topLeftBottomRight
         case bottomLeftTopRight
     }

@@ -11,7 +11,7 @@ import UIKit
 
 final class OpenNewsViewModel {
     
-    private(set) var cellViewModels = [CellViewModelProtocol]()
+    private(set) var cellViewModels = [CellNewsViewModelProtocol]()
     
     //MARK: - Public Property
     
@@ -26,7 +26,7 @@ final class OpenNewsViewModel {
     
     //MARK: - Public Method
     
-    func getCellViewModel(at indexPath: IndexPath) -> CellViewModelProtocol {
+    func getCellViewModel(at indexPath: IndexPath) -> CellNewsViewModelProtocol {
         return cellViewModels[indexPath.row]
     }
         

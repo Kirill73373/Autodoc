@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class FullUrlNewsCellViewModel: CellViewModelProtocol {
+final class FullUrlNewsCellViewModel: CellNewsViewModelProtocol {
     
     //MARK: - Public Property
     

@@ -10,7 +10,7 @@ import UIKit
 
 extension UICollectionViewCell {
     
-    func viewModel(_ model: CellViewModelProtocol) {
+    func viewModel(_ model: CellNewsViewModelProtocol) {
         guard var cell = self as? MyCellProtocol else { return }
         cell.viewModel = model
     }

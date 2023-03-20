@@ -17,8 +17,7 @@ final class NewsViewModel {
     //MARK: - Private(Read Only) Property
     
     private(set) var subjectModel = PassthroughSubject<Void, Never>()
-    
-    private(set) var cellViewModels = [NewsCellViewModel]() {
+    private(set) var cellViewModels = [CellNewsViewModelProtocol]() {
         didSet {
             subjectModel.send()
         }
@@ -26,8 +25,7 @@ final class NewsViewModel {
     
     //MARK: - Public Property
     
-    var cellSearchViewModels = [NewsCellViewModel]()
-    
+    var cellSearchViewModels = [CellNewsViewModelProtocol]()
     var cancellables = Set<AnyCancellable>()
     
     //MARK: - Initiation
@@ -56,7 +54,7 @@ final class NewsViewModel {
         }
     }
     
-    func getCellViewModel(at indexPath: IndexPath) -> NewsCellViewModel {
+    func getCellViewModel(at indexPath: IndexPath) -> CellNewsViewModelProtocol {
         return cellSearchViewModels[indexPath.row]
     }
 }

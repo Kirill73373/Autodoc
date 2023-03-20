@@ -7,8 +7,13 @@
 
 import Foundation
 
-protocol CellViewModelProtocol {
+protocol CellBaseViewModelProtocol {
+    var type: OpenNewsType { get }
+    var identifier: String { get }
+}
+
+protocol CellNewsViewModelProtocol: CellBaseViewModelProtocol {
     var model: NewsItemModel? { get set }
-    var type: OpenNewsType { get set }
-    var identifier: String { get set }
+   
+    init(model: NewsItemModel?)
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NewsCell: UICollectionViewCell {
+final class NewsCell: UICollectionViewCell, MyCellProtocol {    
     
     //MARK: - UI
     
@@ -36,7 +36,7 @@ final class NewsCell: UICollectionViewCell {
     
     private var task: URLSessionDataTask?
 
-    var viewModel: NewsCellViewModel? {
+    var viewModel: CellNewsViewModelProtocol? {
         didSet {
             guard let model = viewModel?.model else{ return }
             DispatchQueue.main.async {

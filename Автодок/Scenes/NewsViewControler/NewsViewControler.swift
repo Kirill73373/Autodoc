@@ -29,7 +29,7 @@ final class NewsViewControler: UIViewController {
         collection.backgroundColor = ColorHelper.whiteColor
         collection.showsVerticalScrollIndicator = false
         collection.contentInset = UIEdgeInsets(
-            top: UIDevice.current.userInterfaceIdiom == .pad ? 130 : 85,
+            top: UIDevice.isIpad ? 130 : 85,
             left: 10,
             bottom: 100,
             right: 10
@@ -131,8 +131,8 @@ final class NewsViewControler: UIViewController {
         NSLayoutConstraint.activate([
             emptyImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emptyImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            emptyImageView.heightAnchor.constraint(equalToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 400 : 200),
-            emptyImageView.widthAnchor.constraint(equalToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 450 : 250),
+            emptyImageView.heightAnchor.constraint(equalToConstant: UIDevice.isIpad ? 400 : 200),
+            emptyImageView.widthAnchor.constraint(equalToConstant: UIDevice.isIpad ? 450 : 250),
             
             searchView.topAnchor.constraint(equalTo: view.topAnchor, constant: UIDevice.current.hasNotch ? 60 : 30),
             searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
@@ -187,7 +187,7 @@ extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = collectionView.frame.size
-        return CGSize(width: (size.width - 40) / 2, height: UIDevice.current.userInterfaceIdiom == .pad ? 350 : 200)
+        return CGSize(width: (size.width - 40) / 2, height: UIDevice.isIpad ? 350 : 200)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -210,8 +210,9 @@ extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NewsCell", for: indexPath) as? NewsCell else { return UICollectionViewCell() }
-        cell.viewModel = viewModel.cellSearchViewModels[indexPath.row]
+        let model = viewModel.getCellViewModel(at: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: model.identifier, for: indexPath)
+        cell.viewModel(viewModel.getCellViewModel(at: indexPath))
         return cell
     }
 }

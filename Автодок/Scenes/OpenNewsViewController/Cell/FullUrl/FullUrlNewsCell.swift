@@ -14,7 +14,7 @@ final class FullUrlNewsCell: UICollectionViewCell, MyCellProtocol {
     private let titleLabel: UILabel = {
         let lb = UILabel()
         lb.textColor = .systemBlue
-        lb.font = .systemFont(ofSize: UIDevice.current.userInterfaceIdiom == .pad ? 13 : 16, weight: .regular)
+        lb.font = .systemFont(ofSize: UIDevice.isIpad ? 13 : 16, weight: .regular)
         lb.textAlignment = .left
         lb.numberOfLines = 0
         lb.lineBreakMode = .byWordWrapping
@@ -23,7 +23,7 @@ final class FullUrlNewsCell: UICollectionViewCell, MyCellProtocol {
     
     //MARK: - Public Property
     
-    var viewModel: CellViewModelProtocol? {
+    var viewModel: CellNewsViewModelProtocol? {
         didSet {
             guard let model = viewModel?.model else { return }
             titleLabel.text = model.fullURL

@@ -7,10 +7,12 @@
 
 import Foundation
 
-final class NewsCellViewModel: NSObject {
+final class NewsCellViewModel: CellNewsViewModelProtocol {
     
     //MARK: - Public Property
     
+    var identifier: String = "NewsCell"
+    var type: OpenNewsType = .other
     var model: NewsItemModel?
     
     //MARK: - Initiation

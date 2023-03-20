@@ -8,5 +8,5 @@
 import Foundation
 
 protocol MyCellProtocol {
-    var viewModel: CellViewModelProtocol? { get set }
+    var viewModel: CellNewsViewModelProtocol? { get set }
 }

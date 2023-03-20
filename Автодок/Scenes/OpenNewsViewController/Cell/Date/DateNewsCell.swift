@@ -23,7 +23,7 @@ final class DateNewsCell: UICollectionViewCell, MyCellProtocol {
     
     //MARK: - Public Property
     
-    var viewModel: CellViewModelProtocol? {
+    var viewModel: CellNewsViewModelProtocol? {
         didSet {
             guard let model = viewModel?.model else { return }
             titleLabel.text = "Дата публикации: \(model.publishedDate.convertDateFormat())"

@@ -13,4 +13,5 @@ enum OpenNewsType: Int {
     case description
     case fullUrl
     case date
+    case other
 }

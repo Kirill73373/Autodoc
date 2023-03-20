@@ -13,4 +13,8 @@ extension UIDevice {
         let bottom = UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0
         return bottom > 0
     }
+    
+    static var isIpad: Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
 }
