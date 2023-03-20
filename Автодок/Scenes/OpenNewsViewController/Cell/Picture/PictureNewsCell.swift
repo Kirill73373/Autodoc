@@ -24,9 +24,7 @@ final class PictureNewsCell: UICollectionViewCell, MyCellProtocol {
     var viewModel: CellNewsViewModelProtocol? {
         didSet {
             guard let model = viewModel?.model else { return }
-            DispatchQueue.main.async {
-                self.titleImageView.loadImage(urlString: model.titleImageURL)
-            }
+            titleImageView.loadImage(urlString: model.titleImageURL)
         }
     }
     
@@ -53,9 +51,7 @@ final class PictureNewsCell: UICollectionViewCell, MyCellProtocol {
     
     func configure(_ model: NewsItemModel?) {
         guard let modelCopy = model else { return }
-        DispatchQueue.main.async {
-            self.titleImageView.loadImage(urlString: modelCopy.titleImageURL)
-        }
+        titleImageView.loadImage(urlString: modelCopy.titleImageURL)
     }
     
     //MARK: - Private Method

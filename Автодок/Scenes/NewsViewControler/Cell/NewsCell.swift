@@ -33,15 +33,13 @@ final class NewsCell: UICollectionViewCell, MyCellProtocol {
         lb.numberOfLines = 2
         return lb
     }()
-    
+        
     //MARK: - Public Property
 
     var viewModel: CellNewsViewModelProtocol? {
         didSet {
             guard let model = viewModel?.model else{ return }
-            DispatchQueue.main.async {
-                self.titleImageView.loadImage(urlString: model.titleImageURL)
-            }
+            titleImageView.loadImage(urlString: model.titleImageURL)
             titleLabel.text = model.title
         }
     }

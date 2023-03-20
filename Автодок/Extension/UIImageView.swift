@@ -36,9 +36,7 @@ extension UIImageView {
         activityIndicator.center = self.center
         
         let urlRequest = URLRequest(url: url)
-        
         let (data, _) = try await URLSession.shared.data(for: urlRequest)
-        
         let imageToCache = UIImage(data: data)
         imageCache.setObject(imageToCache ?? UIImage(), forKey: urlString as NSString)
         self.image = imageToCache
