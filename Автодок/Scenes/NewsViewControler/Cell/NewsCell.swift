@@ -34,7 +34,11 @@ final class NewsCell: UICollectionViewCell, MyCellProtocol {
         return lb
     }()
     
+    //MARK: - Private Property
+    
     private var task: URLSessionDataTask?
+    
+    //MARK: - Public Property
 
     var viewModel: CellNewsViewModelProtocol? {
         didSet {

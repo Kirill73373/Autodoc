@@ -32,6 +32,8 @@ final class OpenNewsViewController: UIViewController {
         return collection
     }()
     
+    //MARK: - Private Property
+    
     private let viewModel: OpenNewsViewModel
     
     //MARK: - Initiation

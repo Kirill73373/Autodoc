@@ -9,10 +9,13 @@ import Foundation
 
 final class FullUrlNewsCellViewModel: CellNewsViewModelProtocol {
     
+    //MARK: - Private(Read Only) Property
+    
+    private(set) var identifier: String = "FullUrlNewsCell"
+    private(set) var type: OpenNewsType = .fullUrl
+    
     //MARK: - Public Property
     
-    var identifier: String = "FullUrlNewsCell"
-    var type: OpenNewsType = .fullUrl
     var model: NewsItemModel?
     
     //MARK: - Initiation
@@ -21,4 +24,3 @@ final class FullUrlNewsCellViewModel: CellNewsViewModelProtocol {
         self.model = model
     }
 }
-

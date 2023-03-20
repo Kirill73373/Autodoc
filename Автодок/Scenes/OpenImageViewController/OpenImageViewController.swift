@@ -36,7 +36,8 @@ final class OpenImageViewController: UIViewController {
         return img
     }()
     
-    private var task: URLSessionDataTask?
+    //MARK: - Private Property
+    
     private let viewModel: OpenImageViewModel
     
     //MARK: - Initiation
@@ -70,7 +71,7 @@ final class OpenImageViewController: UIViewController {
         scrollView.delegate = self
         view.backgroundColor = ColorHelper.blackColor.withAlphaComponent(0.9)
         DispatchQueue.main.async {
-            self.task = self.photoImageView.loadImageCache(urlString: self.viewModel.urlStrng)
+            self.viewModel.task = self.photoImageView.loadImageCache(urlString: self.viewModel.urlStrng)
         }
     }
     

@@ -26,7 +26,7 @@ final class DateNewsCell: UICollectionViewCell, MyCellProtocol {
     var viewModel: CellNewsViewModelProtocol? {
         didSet {
             guard let model = viewModel?.model else { return }
-            titleLabel.text = "Дата публикации: \(model.publishedDate.convertDateFormat())"
+            titleLabel.text = "Дата публикации: \(model.publishedDate.convertDateFormat(old: "yyyy-MM-dd'T'HH:mm:ss"))"
         }
     }
     

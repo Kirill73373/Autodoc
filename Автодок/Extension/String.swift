@@ -8,13 +8,13 @@
 import Foundation
 
 extension String {
-    
-    func convertDateFormat() -> String {
+
+    func convertDateFormat(old odldDateFotmat: String, new dateFormat: String = "dd.MM.yyyy") -> String {
         let olDateFormatter = DateFormatter()
-        olDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        olDateFormatter.dateFormat = odldDateFotmat
         let oldDate = olDateFormatter.date(from: self)
         let convertDateFormatter = DateFormatter()
-        convertDateFormatter.dateFormat = "dd.MM.yyyy"
+        convertDateFormatter.dateFormat = dateFormat
         return convertDateFormatter.string(from: oldDate ?? Date())
     }
 }

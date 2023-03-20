@@ -9,10 +9,13 @@ import Foundation
 
 final class DescriptionNewsCellViewModel: CellNewsViewModelProtocol {
     
+    //MARK: - Private(Read Only) Property
+    
+    private(set) var identifier: String = "DescriptionNewsCell"
+    private(set) var type: OpenNewsType = .description
+    
     //MARK: - Public Property
     
-    var identifier: String = "DescriptionNewsCell"
-    var type: OpenNewsType = .description
     var model: NewsItemModel?
     
     //MARK: - Initiation
@@ -21,4 +24,3 @@ final class DescriptionNewsCellViewModel: CellNewsViewModelProtocol {
         self.model = model
     }
 }
-

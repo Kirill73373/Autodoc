@@ -33,6 +33,8 @@ final class PictureNewsCell: UICollectionViewCell, MyCellProtocol {
             }
         }
     }
+    
+    //MARK: - Override Method
 
     override func prepareForReuse() {
         super.prepareForReuse()

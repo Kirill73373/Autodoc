@@ -14,6 +14,5 @@ protocol CellBaseViewModelProtocol {
 
 protocol CellNewsViewModelProtocol: CellBaseViewModelProtocol {
     var model: NewsItemModel? { get set }
-   
     init(model: NewsItemModel?)
 }

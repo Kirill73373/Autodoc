@@ -28,12 +28,7 @@ final class NewsViewControler: UIViewController {
         collection.registerCells(NewsCell.self)
         collection.backgroundColor = ColorHelper.whiteColor
         collection.showsVerticalScrollIndicator = false
-        collection.contentInset = UIEdgeInsets(
-            top: UIDevice.isIpad ? 130 : 85,
-            left: 10,
-            bottom: 100,
-            right: 10
-        )
+        collection.contentInset = UIEdgeInsets(top: UIDevice.isIpad ? 130 : 85, left: 10, bottom: 100, right: 10)
         return collection
     }()
     
@@ -53,6 +48,8 @@ final class NewsViewControler: UIViewController {
         vw.alpha = 0
         return vw
     }()
+    
+    //MARK: - Private Property
     
     private let viewModel: NewsViewModel
     
