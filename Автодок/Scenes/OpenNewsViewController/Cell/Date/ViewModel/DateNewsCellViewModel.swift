@@ -8,7 +8,7 @@
 import Foundation
 
 final class DateNewsCellViewModel: CellNewsViewModelProtocol {
-    
+
     //MARK: - Private(Read Only) Property
     
     private(set) var identifier: String = "DateNewsCell"

@@ -47,13 +47,6 @@ final class PictureNewsCell: UICollectionViewCell, MyCellProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Public Method
-    
-    func configure(_ model: NewsItemModel?) {
-        guard let modelCopy = model else { return }
-        titleImageView.loadImage(urlString: modelCopy.titleImageURL)
-    }
-    
     //MARK: - Private Method
     
     private func setupCellStyle() {

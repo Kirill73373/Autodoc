@@ -70,7 +70,7 @@ final class OpenImageViewController: UIViewController {
     private func setupStyleView() {
         scrollView.delegate = self
         view.backgroundColor = ColorHelper.blackColor.withAlphaComponent(0.9)
-        photoImageView.loadImage(urlString: self.viewModel.urlStrng)
+        photoImageView.loadImage(urlString: viewModel.urlStrng)
     }
     
     private func addConstraints() {

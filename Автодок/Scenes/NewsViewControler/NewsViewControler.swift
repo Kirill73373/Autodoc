@@ -209,7 +209,7 @@ extension NewsViewControler: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let model = viewModel.getCellViewModel(at: indexPath)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: model.identifier, for: indexPath)
-        cell.viewModel(viewModel.getCellViewModel(at: indexPath))
+        cell.viewModel(model)
         return cell
     }
 }
